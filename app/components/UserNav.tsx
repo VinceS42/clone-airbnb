@@ -3,6 +3,7 @@ import {
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
+    DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { MenuIcon } from "lucide-react";
 import {
@@ -11,10 +12,16 @@ import {
     LogoutLink,
 } from "@kinde-oss/kinde-auth-nextjs/components";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import Link from "next/link";
+import { creatAirbnbHome } from "../actions";
 
 export default async function UserNav() {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
+
+    const createHomeWithId = creatAirbnbHome.bind(null, {
+        userId: user?.id as string,
+    });
 
     return (
         <DropdownMenu>
@@ -31,11 +38,31 @@ export default async function UserNav() {
                     />
                 </div>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="<-[200px]">
+            <DropdownMenuContent align="end" className="w-[200px]">
                 {user ? (
                     <>
                         <DropdownMenuItem>
-                            <LogoutLink className="w-full">
+                            <form action={createHomeWithId} className="w-full">
+                                <button
+                                    type="submit"
+                                    className="w-full text-start font-bold"
+                                >
+                                    Votre chez vous
+                                </button>
+                            </form>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <Link href="/listes">Ma listes</Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <Link href="/mes-favoris">Mes favoris</Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                            <Link href="/reservation">Mes reservations</Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem>
+                            <LogoutLink className="w-full text-red-500">
                                 Se déconnecter
                             </LogoutLink>
                         </DropdownMenuItem>
