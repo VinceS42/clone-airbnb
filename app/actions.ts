@@ -1,7 +1,8 @@
 "use server";
+
 import { redirect } from "next/navigation";
-import prisma from "./lib/db";
 import { supabase } from "@/app/lib/supabase";
+import prisma from "./lib/db";
 
 export async function createAirbnbHome({ userId }: { userId: string }) {
     const data = await prisma.home.findFirst({
@@ -28,6 +29,23 @@ export async function createAirbnbHome({ userId }: { userId: string }) {
         return redirect(`/create/${data.id}/structure`);
     } else if (data.addedCategory && !data.addedDescription) {
         return redirect(`/create/${data.id}/description`);
+    } else if (
+        data.addedCategory &&
+        data.addedDescription &&
+        !data.addedLocation
+    ) {
+        return redirect(`/create/${data.id}/address`);
+    } else if (
+        data.addedCategory &&
+        data.addedDescription &&
+        data.addedLocation
+    ) {
+        const data = await prisma.home.create({
+            data: {
+                userId: userId,
+            },
+        });
+        return redirect(`/create/${data.id}/structure`);
     }
 }
 
@@ -58,12 +76,29 @@ export async function CreateDescription(formData: FormData) {
     const bedroomsNumber = formData.get("bedrooms") as string;
     const bathroomsNumber = formData.get("bathrooms") as string;
 
-    const { data: imageData } = await supabase.storage
+    function cleanFileName(fileName: string) {
+        // Remplace les caractères spéciaux par des tirets
+        // Adaptez cette regex à vos besoins spécifiques !
+        return fileName.replace(/[^a-zA-Z0-9.]/g, "-");
+    }
+
+    const cleanName = cleanFileName(imageFile.name);
+    const filePath = `${cleanName}-${new Date().toISOString()}`;
+
+    const { data: imageData, error } = await supabase.storage
         .from("images")
-        .upload(`${imageFile.name}-${new Date()}`, imageFile, {
+        .upload(filePath, imageFile, {
             cacheControl: "2592000",
             contentType: "image/png",
         });
+
+    if (error) {
+        console.error(
+            "Erreur lors du téléchargement de l'image :",
+            error.message
+        );
+        return; // Gérez l'erreur de manière appropriée
+    }
 
     const data = await prisma.home.update({
         where: {
@@ -96,4 +131,5 @@ export async function createLocation(formData: FormData) {
             country: countryValue,
         },
     });
+    return redirect("/");
 }
