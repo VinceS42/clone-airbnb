@@ -1,8 +1,8 @@
+import { createCategoryPage } from "@/app/actions";
+import CreationBottomBar from "@/app/components/CreationBottomBar";
 import SelectedCategory from "@/app/components/SelectedCategory";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 
-export default function StructureRoute() {
+export default function StructureRoute({ params }: { params: { id: string } }) {
     return (
         <>
             <div className="w-3/5 mx-auto">
@@ -10,16 +10,10 @@ export default function StructureRoute() {
                     Comment décririez-vous le mieux votre habition?
                 </h2>
             </div>
-            <form>
+            <form action={createCategoryPage}>
+                <input type="hidden" name="homeId" value={params.id} />
                 <SelectedCategory />
-                <div className="fixed w-full bottom-0 z-10 bg-white border-t h-24">
-                    <div className="container flex items-center justify-between mx-auto px-5 lg:px-10 h-full">
-                        <Button variant="secondary" size="lg">
-                            <Link href="/">Annuler</Link>
-                        </Button>
-                        <Button size="lg">Sauvegarder</Button>
-                    </div>
-                </div>
+                <CreationBottomBar />
             </form>
         </>
     );
