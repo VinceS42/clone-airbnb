@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import React from "react";
-import CreationSubmit from "./SubmitButton";
+import { CreationSubmit } from "./SubmitButton";
 import Link from "next/link";
 
 export default function CreationBottomBar() {

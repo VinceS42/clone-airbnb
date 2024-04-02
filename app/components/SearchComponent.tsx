@@ -31,11 +31,7 @@ import { CreationSubmit } from "./SubmitButton";
 import { Card, CardHeader } from "@/components/ui/card";
 import Counter from "./Counter";
 
-export default function SearchModalComponent({
-    params,
-}: {
-    params: { id: string };
-}) {
+export default function SearchModalComponent() {
     const [step, setStep] = useState(1);
     const { getAllCountries } = useCountries();
     const [locationValue, setLocationValue] = useState("");
