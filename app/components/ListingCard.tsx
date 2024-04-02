@@ -1,12 +1,22 @@
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
+
 import { useCountries } from "../lib/getCountries";
+import { AddToFavoriteButton, DeleteFromFavoriteButton } from "./SubmitButton";
+
+import { Heart } from "lucide-react";
+import { DeleteFromFavorite, addToFavorite } from "../actions";
 
 interface iAppProps {
     imagePath: string;
     description: string;
     location: string;
     price: number;
+    isInFavoriteListe: boolean;
+    favoriteId: string;
+    homeId: string;
+    userId: string | undefined;
+    pathName: string;
 }
 
 export default function ListingCard({
@@ -14,6 +24,11 @@ export default function ListingCard({
     description,
     location,
     price,
+    isInFavoriteListe,
+    favoriteId,
+    homeId,
+    userId,
+    pathName,
 }: iAppProps) {
     const { getCountryByValue } = useCountries();
     const country = getCountryByValue(location);
@@ -27,8 +42,52 @@ export default function ListingCard({
                     fill
                     className="rounded-lg h-full object-cover"
                 />
+
+                {userId && (
+                    <div className="z-10 absolute top-2 right-2">
+                        {isInFavoriteListe ? (
+                            <form action={DeleteFromFavorite}>
+                                <input
+                                    type="hidden"
+                                    name="favoriteId"
+                                    value={favoriteId}
+                                />
+                                <input
+                                    type="hidden"
+                                    name="userId"
+                                    value={userId}
+                                />
+                                <input
+                                    type="hidden"
+                                    name="pathName"
+                                    value={pathName}
+                                />
+                                <DeleteFromFavoriteButton />
+                            </form>
+                        ) : (
+                            <form action={addToFavorite}>
+                                <input
+                                    type="hidden"
+                                    name="homeId"
+                                    value={homeId}
+                                />
+                                <input
+                                    type="hidden"
+                                    name="userId"
+                                    value={userId}
+                                />
+                                <input
+                                    type="hidden"
+                                    name="pathName"
+                                    value={pathName}
+                                />
+                                <AddToFavoriteButton />
+                            </form>
+                        )}
+                    </div>
+                )}
             </div>
-            <Link href={"/"} className="mt-2">
+            <Link href={`/home/${homeId}`} className="mt-2">
                 <h3 className="font-medium text-base">
                     {country?.flag} / {country?.region}
                 </h3>

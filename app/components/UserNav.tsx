@@ -52,13 +52,15 @@ export default async function UserNav() {
                             </form>
                         </DropdownMenuItem>
                         <DropdownMenuItem>
-                            <Link href="/listes">Ma listes</Link>
+                            <Link href="/mes-maisons">Ma listes</Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem>
                             <Link href="/mes-favoris">Mes favoris</Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem>
-                            <Link href="/reservation">Mes reservations</Link>
+                            <Link href="/mes-reservations">
+                                Mes reservations
+                            </Link>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>

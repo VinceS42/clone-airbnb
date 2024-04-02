@@ -1,8 +1,11 @@
 "use server";
 
+import { metadata } from "./layout";
+
 import { redirect } from "next/navigation";
 import { supabase } from "@/app/lib/supabase";
 import prisma from "./lib/db";
+import { revalidatePath } from "next/cache";
 
 export async function createAirbnbHome({ userId }: { userId: string }) {
     const data = await prisma.home.findFirst({
@@ -131,5 +134,53 @@ export async function createLocation(formData: FormData) {
             country: countryValue,
         },
     });
+    return redirect("/");
+}
+
+export async function addToFavorite(formData: FormData) {
+    const homeId = formData.get("homeId") as string;
+    const userId = formData.get("userId") as string;
+    const pathName = formData.get("pathName") as string;
+
+    const data = await prisma.favorite.create({
+        data: {
+            homeId: homeId,
+            userId: userId,
+        },
+    });
+
+    revalidatePath(pathName);
+}
+
+export async function DeleteFromFavorite(formData: FormData) {
+    const userId = formData.get("userId") as string;
+    const pathName = formData.get("pathName") as string;
+    const favoriteId = formData.get("favoriteId") as string;
+
+    const data = await prisma.favorite.delete({
+        where: {
+            id: favoriteId,
+            userId: userId,
+        },
+    });
+
+    revalidatePath(pathName);
+}
+
+export async function createReservation(formData: FormData) {
+    const userId = formData.get("userId") as string;
+    const homeId = formData.get("homeId") as string;
+    const startDate = formData.get("startDate") as string;
+    const endDate = formData.get("endDate") as string;
+
+    const data = await prisma.reservation.create({
+        data: {
+            userId: userId,
+            endDate: endDate,
+            startDate: startDate,
+            homeId: homeId,
+        },
+    });
+
     return redirect("/");
 }
