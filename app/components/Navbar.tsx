@@ -4,6 +4,7 @@ import DesktopLogo from "@/public/airbnb-desktop.png";
 import MobileLogo from "@/public/airbnb-mobile.webp";
 import Link from "next/link";
 import UserNav from "./UserNav";
+import SearchModalComponent from "./SearchComponent";
 
 export default function NavBar() {
     return (
@@ -21,7 +22,7 @@ export default function NavBar() {
                         className="w-12 block lg:hidden"
                     />
                 </Link>
-
+                <SearchModalComponent />
                 <UserNav />
             </div>
         </nav>

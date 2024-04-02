@@ -14,6 +14,10 @@ async function getData({
     userId: string | undefined;
     searchParams?: {
         filter?: string;
+        country?: string;
+        guests?: string;
+        bedrooms?: string;
+        bathrooms?: string;
     };
 }) {
     const data = await prisma.home.findMany({
@@ -22,6 +26,10 @@ async function getData({
             addedLocation: true,
             addedDescription: true,
             categoryName: searchParams?.filter ?? undefined,
+            country: searchParams?.country ?? undefined,
+            guests: searchParams?.guests ?? undefined,
+            bedrooms: searchParams?.bedrooms ?? undefined,
+            bathrooms: searchParams?.bathrooms ?? undefined,
         },
         select: {
             photo: true,
@@ -44,6 +52,10 @@ export default function Home({
 }: {
     searchParams?: {
         filter?: string;
+        country?: string;
+        guests?: string;
+        bedrooms?: string;
+        bathrooms?: string;
     };
 }) {
     return (
@@ -62,6 +74,10 @@ async function ShowItems({
 }: {
     searchParams?: {
         filter?: string;
+        country?: string;
+        guests?: string;
+        bedrooms?: string;
+        bathrooms?: string;
     };
 }) {
     const { getUser } = getKindeServerSession();
@@ -74,8 +90,11 @@ async function ShowItems({
     return (
         <>
             {data.length === 0 ? (
-                <NoItems description="Veuillez sélectionner un autre catégorie ou créer votre propre
-                annonce !" title="Désolé, il n'y a pas de résultat pour cette catégorie..."/>
+                <NoItems
+                    description="Veuillez sélectionner un autre catégorie ou créer votre propre
+                annonce !"
+                    title="Désolé, il n'y a pas de résultat pour cette catégorie..."
+                />
             ) : (
                 <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-8 mt-8">
                     {data.map((item) => (
