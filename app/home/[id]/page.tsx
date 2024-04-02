@@ -1,17 +1,20 @@
-import { createReservation } from "@/app/actions";
+import Link from "next/link";
+import Image from "next/image";
+import { unstable_noStore as noStore } from "next/cache";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+
+import prisma from "@/app/lib/db";
 import CategoriyShowcase from "@/app/components/CategoryShowcase";
 import HomeMap from "@/app/components/HomeMap";
 import SelectCalendar from "@/app/components/SelectCalendar";
+import { createReservation } from "@/app/actions";
 import { ReservationSubmitButton } from "@/app/components/SubmitButton";
-import prisma from "@/app/lib/db";
 import { useCountries } from "@/app/lib/getCountries";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import Image from "next/image";
-import Link from "next/link";
 
 async function getData(homeId: string) {
+    noStore();
     const data = await prisma.home.findUnique({
         where: {
             id: homeId,

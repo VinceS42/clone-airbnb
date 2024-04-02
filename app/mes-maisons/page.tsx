@@ -1,13 +1,14 @@
-import { use } from "react";
 import { redirect } from "next/navigation";
+import { unstable_noStore as noStore } from "next/cache";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+
 
 import prisma from "../lib/db";
 import NoItems from "../components/NoItems";
 import ListingCard from "../components/ListingCard";
-import { it } from "node:test";
 
 async function getData(userId: string) {
+    noStore();
     const data = await prisma.home.findMany({
         where: {
             userId: userId,
