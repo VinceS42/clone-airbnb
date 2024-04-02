@@ -83,7 +83,7 @@ export function ReservationSubmitButton() {
             {pending ? (
                 <Button className="w-full" disabled>
                     <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Attendez s'il vous plait...
+                    Attendez s&apos;il vous plait...
                 </Button>
             ) : (
                 <Button className="w-full" type="submit">
