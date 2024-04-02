@@ -73,7 +73,7 @@ export default async function UserNav() {
                     <>
                         <DropdownMenuItem>
                             <RegisterLink className="w-full">
-                                S'enregistrer
+                                S&apos;enregistrer
                             </RegisterLink>
                         </DropdownMenuItem>
                         <DropdownMenuItem>
