@@ -70,3 +70,5 @@ model Reservation {
   Home   Home?   @relation(fields: [homeId], references: [id])
   homeId String?
 }
+
+
