@@ -104,19 +104,7 @@ export default async function HomeRoute({
                     <p className="text-muted-foreground">{data?.description}</p>
                     <Separator className="my-7" />
                     <HomeMap locationValue={country?.value as string} />
-                </div>
-                <form action={createReservation}>
-                    <input type="hidden" name="homeId" value={params.id} />
-                    <input type="hidden" name="userId" value={user?.id} />
-                    <SelectCalendar reservation={data?.Reservation} />
-                    {user?.id ? (
-                        <ReservationSubmitButton />
-                    ) : (
-                        <Button className="w-full" asChild>
-                            <Link href="/api/auth/login">Réserver</Link>
-                        </Button>
-                    )}
-                </form>
+                </div>                
             </div>
         </div>
     );
